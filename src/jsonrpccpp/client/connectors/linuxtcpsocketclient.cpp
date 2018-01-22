@@ -54,13 +54,13 @@ void LinuxTcpSocketClient::SendRPCMessage(const std::string &message,
   }
 }
 
-void LinuxTcpSocketConnect() {
-  socket_fd = this->Connect();
+void LinuxTcpSocketClient::LinuxTcpSocketConnect() {
+  this->socket_fd = this->Connect();
   this->connected = true;
 }
 
-void LinuxTcpSocketDisconnect() {
-  close(socket_fd);
+void LinuxTcpSocketClient::LinuxTcpSocketDisconnect() {
+  close(this->socket_fd);
   this->connected = false;
 }
 
