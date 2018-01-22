@@ -109,11 +109,11 @@ bool RpcProtocolClient::ValidateResponse(const Json::Value &response) {
     if (!response.isMember(KEY_PROTOCOL_VERSION) ||
         response[KEY_PROTOCOL_VERSION] != "2.0")
       return false;
-    if (response.isMember(KEY_RESULT) && response.isMember(KEY_ERROR))
+    if (response.isMember(KEY_RESULT) && response.isMember(KEY_ERROR) && !response[KEY_ERROR].isNull())
       return false;
     if (!response.isMember(KEY_RESULT) && !response.isMember(KEY_ERROR))
       return false;
-    if (response.isMember(KEY_ERROR) &&
+    if (response.isMember(KEY_ERROR) && !response[KEY_ERROR].isNull() &&
         !(response[KEY_ERROR].isObject() &&
           response[KEY_ERROR].isMember(KEY_ERROR_CODE) &&
           response[KEY_ERROR][KEY_ERROR_CODE].isIntegral()))
@@ -126,7 +126,7 @@ bool RpcProtocolClient::ValidateResponse(const Json::Value &response) {
 bool RpcProtocolClient::HasError(const Json::Value &response) {
   if (this->version == JSONRPC_CLIENT_V1 && !response[KEY_ERROR].isNull())
     return true;
-  else if (this->version == JSONRPC_CLIENT_V2 && response.isMember(KEY_ERROR))
+  else if (this->version == JSONRPC_CLIENT_V2 && response.isMember(KEY_ERROR) && !response[KEY_ERROR].isNull())
     return true;
   return false;
 }
