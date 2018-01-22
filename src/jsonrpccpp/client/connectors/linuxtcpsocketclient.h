@@ -31,6 +31,14 @@ namespace jsonrpc
              * @brief ~LinuxTcpSocketClient, the destructor of LinuxTcpSocketClient
              */
             virtual ~LinuxTcpSocketClient();
+	    /**
+	     * @brief Start the tcp connection
+	     */
+	    void LinuxTcpSocketConnect();
+	    /**
+	     * @brief Stop the tcp connection
+	     */
+	    void LinuxTcpSocketDisconnect();
             /**
              * @brief The real implementation of TcpSocketClient::SendRPCMessage method.
              * @param message The message to send
@@ -42,6 +50,10 @@ namespace jsonrpc
         private:
             std::string hostToConnect;    /*!< The hostname or the ipv4 address on which the client should try to connect*/
             unsigned int port;          /*!< The port on which the client should try to connect*/
+
+	    bool connected; /* true when connected */
+
+	    int socket_fd;
             /**
              * @brief Connects to the host and port provided by constructor parameters.
              *

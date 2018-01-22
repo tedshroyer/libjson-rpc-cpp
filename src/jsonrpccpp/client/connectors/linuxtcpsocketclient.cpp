@@ -34,7 +34,11 @@ LinuxTcpSocketClient::~LinuxTcpSocketClient() {}
 
 void LinuxTcpSocketClient::SendRPCMessage(const std::string &message,
                                           std::string &result) {
-  int socket_fd = this->Connect();
+
+  if (!this->connected) {
+    throw JsonRpcException(Errors::ERROR_CLIENT_CONNECTOR,
+                           "Socket not connected");
+  }
 
   StreamWriter writer;
   string toSend = message + DEFAULT_DELIMITER_CHAR;
@@ -48,8 +52,18 @@ void LinuxTcpSocketClient::SendRPCMessage(const std::string &message,
     throw JsonRpcException(Errors::ERROR_CLIENT_CONNECTOR,
                            "Could not read response");
   }
-  close(socket_fd);
 }
+
+void LinuxTcpSocketConnect() {
+  socket_fd = this->Connect();
+  this->connected = true;
+}
+
+void LinuxTcpSocketDisconnect() {
+  close(socket_fd);
+  this->connected = false;
+}
+
 
 int LinuxTcpSocketClient::Connect() {
   if (this->IsIpv4Address(this->hostToConnect)) {
