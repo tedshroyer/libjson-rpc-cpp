@@ -31,14 +31,6 @@ namespace jsonrpc
              * @brief ~LinuxTcpSocketClient, the destructor of LinuxTcpSocketClient
              */
             virtual ~LinuxTcpSocketClient();
-	    /**
-	     * @brief Start the tcp connection
-	     */
-	    void LinuxTcpSocketConnect();
-	    /**
-	     * @brief Stop the tcp connection
-	     */
-	    void LinuxTcpSocketDisconnect();
             /**
              * @brief The real implementation of TcpSocketClient::SendRPCMessage method.
              * @param message The message to send
